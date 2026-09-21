@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.pensionsure.ui.MatchReportController"
+            prefWidth="780" prefHeight="580">
+
+    <top>
+        <VBox styleClass="header-bar">
+            <padding><Insets top="14" right="20" bottom="14" left="20"/></padding>
+            <Label text="DLC Match Report" styleClass="app-title"/>
+            <Label fx:id="reportSubtitle" text="" styleClass="app-subtitle"/>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="16">
+            <padding><Insets top="20" right="24" bottom="8" left="24"/></padding>
+
+            <!-- Overall confidence banner -->
+            <HBox spacing="24" styleClass="summary-banner" alignment="CENTER_LEFT">
+                <padding><Insets top="12" right="16" bottom="12" left="16"/></padding>
+                <VBox spacing="2">
+                    <Label text="Overall Confidence" styleClass="card-label"/>
+                    <Label fx:id="overallScoreLabel" text="—" styleClass="score-large"/>
+                </VBox>
+                <VBox spacing="2">
+                    <Label text="Fields Flagged" styleClass="card-label"/>
+                    <Label fx:id="flagCountLabel" text="—" styleClass="score-large"/>
+                </VBox>
+                <Label fx:id="verdictLabel" text="" styleClass="verdict-label"
+                       wrapText="true" HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <!-- Per-field results table -->
+            <Label text="Per-Field Analysis" styleClass="panel-heading"/>
+            <TableView fx:id="flagsTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="fieldCol"      text="Field"       prefWidth="100"/>
+                    <TableColumn fx:id="onFileCol"     text="PDA on File" prefWidth="160"/>
+                    <TableColumn fx:id="submittedCol"  text="Submitted"   prefWidth="160"/>
+                    <TableColumn fx:id="scoreCol"      text="Confidence"  prefWidth="100"/>
+                    <TableColumn fx:id="flaggedCol"    text="Status"      prefWidth="90"/>
+                    <TableColumn fx:id="recommendCol"  text="Recommendation" prefWidth="240"/>
+                </columns>
+                <placeholder>
+                    <Label text="No match data available."/>
+                </placeholder>
+            </TableView>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox spacing="12" styleClass="form-footer" alignment="CENTER_RIGHT">
+            <padding><Insets top="12" right="20" bottom="12" left="20"/></padding>
+            <Button text="← Back to Dashboard" onAction="#onBack"/>
+            <Button text="New Submission" onAction="#onNewSubmission" styleClass="btn-primary"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

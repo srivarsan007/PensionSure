@@ -1,0 +1,138 @@
+/* ─── PensionSure Stylesheet ────────────────────────────────────────────────
+   Colour palette:
+     Deep navy   #1a2744  — primary brand / header bg
+     Sky blue    #2e7dbd  — primary action buttons
+     Amber       #e8a020  — accent (mismatch highlight)
+     Light grey  #f4f6fb  — content background
+     Border grey #dde2ec  — subtle dividers
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.root { -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; -fx-font-size: 13px; }
+
+/* ── Header bar ─────────────────────────────────────────────────────────── */
+.header-bar {
+    -fx-background-color: #1a2744;
+}
+.app-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+.app-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #9bafd0;
+}
+
+/* ── Panels ──────────────────────────────────────────────────────────────── */
+.side-panel {
+    -fx-background-color: #eef1f8;
+    -fx-border-color: #dde2ec;
+    -fx-border-width: 0 1 0 0;
+}
+.action-panel { -fx-background-color: #f4f6fb; }
+.panel-heading { -fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #1a2744; }
+
+/* ── Info cards ──────────────────────────────────────────────────────────── */
+.info-card {
+    -fx-background-color: white;
+    -fx-background-radius: 6;
+    -fx-border-color: #dde2ec;
+    -fx-border-radius: 6;
+    -fx-padding: 10 14 10 14;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 4, 0, 0, 2);
+}
+.card-label { -fx-font-size: 11px; -fx-text-fill: #7a8ab0; }
+.card-value  { -fx-font-weight: bold; -fx-text-fill: #1a2744; }
+
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+.btn-primary {
+    -fx-background-color: #2e7dbd;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+.btn-primary:hover { -fx-background-color: #245f94; }
+
+.btn-secondary {
+    -fx-background-color: #5b6b8a;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+.btn-secondary:hover { -fx-background-color: #42516b; }
+
+.btn-accent {
+    -fx-background-color: #e8a020;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+.btn-accent:hover { -fx-background-color: #c07a10; }
+
+/* ── Form layout ─────────────────────────────────────────────────────────── */
+.form-label  { -fx-font-weight: bold; -fx-text-fill: #3d4f6e; }
+.form-grid   { -fx-background-color: white; }
+.form-footer {
+    -fx-background-color: #eef1f8;
+    -fx-border-color: #dde2ec;
+    -fx-border-width: 1 0 0 0;
+}
+.validation-label { -fx-text-fill: #c0392b; -fx-font-size: 12px; }
+.placeholder-label { -fx-text-fill: #7a8ab0; -fx-font-size: 14px; }
+.status-label { -fx-text-fill: #3d4f6e; -fx-font-size: 12px; }
+
+/* ── Match report screen ─────────────────────────────────────────────────── */
+.summary-banner {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #dde2ec;
+    -fx-border-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 6, 0, 0, 2);
+}
+.score-large {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a2744;
+}
+.verdict-label { -fx-font-size: 14px; -fx-font-weight: bold; }
+.verdict-ok    { -fx-text-fill: #27ae60; }
+.verdict-warn  { -fx-text-fill: #c0392b; }
+
+/* ── Table & Badges ──────────────────────────────────────────────────────── */
+.table-row-cell:selected { -fx-background-color: #d0e8f9; }
+.flag-ok   { -fx-text-fill: #27ae60; -fx-font-weight: bold; }
+.flag-warn { -fx-text-fill: #c0392b; -fx-font-weight: bold; }
+
+/* ── Escalation Badges ───────────────────────────────────────────────────── */
+.escalation-info {
+    -fx-background-color: #e8f4fd;
+    -fx-text-fill: #1976d2;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-padding: 3 8 3 8;
+}
+.escalation-warning {
+    -fx-background-color: #fff8e1;
+    -fx-text-fill: #f57f17;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-padding: 3 8 3 8;
+}
+.escalation-urgent {
+    -fx-background-color: #ffebee;
+    -fx-text-fill: #c62828;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-padding: 3 8 3 8;
+}
+.escalation-done {
+    -fx-background-color: #e8f8f0;
+    -fx-text-fill: #2e7d32;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-padding: 3 8 3 8;
+}
+
+/* ── Status bar ──────────────────────────────────────────────────────────── */
+.status-bar { -fx-background-color: #dde2ec; }
+.status-bar-label { -fx-font-size: 11px; -fx-text-fill: #5b6b8a; }

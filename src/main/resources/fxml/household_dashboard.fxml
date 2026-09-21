@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.pensionsure.ui.HouseholdDashboardController"
+            prefWidth="1050" prefHeight="680"
+            styleClass="root-pane">
+
+    <!-- ── Top: App header & Toolbar ────────────────────────────────────── -->
+    <top>
+        <VBox spacing="0">
+            <VBox styleClass="header-bar">
+                <padding><Insets top="14" right="24" bottom="14" left="24"/></padding>
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label text="Household Aggregation Dashboard" styleClass="app-title"/>
+                        <Label text="Multi-Pensioner DLC Readiness, Matching Status &amp; Deadline Escalations" styleClass="app-subtitle"/>
+                    </VBox>
+                    <Button text="← Main Dashboard" onAction="#onBackToMain" styleClass="btn-secondary"/>
+                </HBox>
+            </VBox>
+
+            <!-- Selection Bar -->
+            <HBox spacing="12" alignment="CENTER_LEFT" styleClass="side-panel">
+                <padding><Insets top="12" right="24" bottom="12" left="24"/></padding>
+                <Label text="Select Household:" styleClass="form-label"/>
+                <ComboBox fx:id="householdSelector" prefWidth="250" promptText="Choose household..."/>
+                <Button text="＋ New Household" onAction="#onCreateHousehold" styleClass="btn-secondary"/>
+                <Button text="＋ Add Member" onAction="#onAddMember" styleClass="btn-primary"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="⚡ Run Deadline Check" onAction="#onRunDeadlineCheckNow" styleClass="btn-accent"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- ── Center: Summary Cards + Aggregation Table ────────────────────── -->
+    <center>
+        <VBox spacing="16" styleClass="action-panel">
+            <padding><Insets top="16" right="24" bottom="16" left="24"/></padding>
+
+            <!-- Summary metrics cards -->
+            <HBox spacing="14" fx:id="summaryCardsRow">
+                <VBox styleClass="info-card" spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Head of Household" styleClass="card-label"/>
+                    <Label fx:id="headNameLabel" text="—" styleClass="card-value"/>
+                </VBox>
+                <VBox styleClass="info-card" spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Total Pensioners" styleClass="card-label"/>
+                    <Label fx:id="totalMembersLabel" text="0" styleClass="score-large"/>
+                </VBox>
+                <VBox styleClass="info-card" spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="DLC Verified / Submitted" styleClass="card-label"/>
+                    <Label fx:id="submissionProgressLabel" text="0 / 0" styleClass="score-large"/>
+                </VBox>
+                <VBox styleClass="info-card" spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Household Escalation" styleClass="card-label"/>
+                    <Label fx:id="householdUrgencyLabel" text="—" styleClass="card-value"/>
+                </VBox>
+                <VBox styleClass="info-card" spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Cutoff Deadline" styleClass="card-label"/>
+                    <Label fx:id="deadlineDaysLabel" text="Nov 30" styleClass="card-value"/>
+                </VBox>
+            </HBox>
+
+            <Separator/>
+
+            <!-- Members Aggregation Table -->
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <Label text="Pensioners in Household" styleClass="panel-heading"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="tableStatusLabel" text="" styleClass="status-label"/>
+            </HBox>
+
+            <TableView fx:id="membersTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="nameCol"        text="Pensioner Name"       prefWidth="160"/>
+                    <TableColumn fx:id="ppoCol"         text="PPO Number"           prefWidth="120"/>
+                    <TableColumn fx:id="pensionTypeCol" text="Type"                 prefWidth="90"/>
+                    <TableColumn fx:id="pdaStatusCol"   text="PDA on File"          prefWidth="130"/>
+                    <TableColumn fx:id="submissionCol"  text="Latest DLC Submission" prefWidth="150"/>
+                    <TableColumn fx:id="matchResultCol" text="Match Result"         prefWidth="160"/>
+                    <TableColumn fx:id="escalationCol"  text="Deadline Status"      prefWidth="130"/>
+                </columns>
+                <placeholder>
+                    <Label text="Select a household to view its aggregated pensioners."/>
+                </placeholder>
+            </TableView>
+
+            <!-- Table Action Buttons Row -->
+            <HBox spacing="12" alignment="CENTER_RIGHT">
+                <Button fx:id="enterSubmissionBtn" text="📝 Enter DLC Submission"
+                        onAction="#onEnterSubmissionForSelected" styleClass="btn-primary"/>
+                <Button fx:id="viewMatchReportBtn" text="🔍 View Match Report"
+                        onAction="#onViewMatchReportForSelected" styleClass="btn-secondary"/>
+            </HBox>
+        </VBox>
+    </center>
+
+    <!-- ── Bottom: Status Bar ───────────────────────────────────────────── -->
+    <bottom>
+        <HBox styleClass="status-bar" alignment="CENTER_LEFT">
+            <padding><Insets top="6" right="16" bottom="6" left="16"/></padding>
+            <Label fx:id="statusBarLabel" text="Ready" styleClass="status-bar-label" HBox.hgrow="ALWAYS"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>
