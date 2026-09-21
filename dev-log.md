@@ -134,3 +134,15 @@ TC02 Name similarity score: 0.9667 (Flagged: true)
 | `ReminderServiceTest` | Parameterized Days Remaining calculation (5 cases) | Exact day count | All day deltas exact | **PASS** |
 | `HouseholdAggregationTest` | Multi-pensioner query by household ID | Returns exact household members | 2 members returned for H1, 1 for H2 | **PASS** |
 | `HouseholdAggregationTest` | Household readiness & reminder logging | Evaluates unsubmitted members | Only unsubmitted member logged with WARNING | **PASS** |
+
+---
+
+## Phase 3 — Polish & Final Review Readiness
+
+**Built & Hardened:**
+- **Git Version Control:** Clean git initialization with standard `.gitignore` avoiding build artifacts and local SQLite files.
+- **End-to-End Integration:** Verified data continuity across entry forms, database persistence, fuzzy matching, match report viewer, and household aggregation dashboard.
+- **Pre-Save Date Validation:** Form-level validation in `RecordEntryController` catches unparseable date formats immediately upon entry before saving corrupted strings to the database.
+- **Household Member Pre-Selection:** Adding a member from the Household Dashboard pre-selects the active household in the entry dialog.
+- **Full Documentation & Limitations:** Comprehensive `README.md` and `docs/limitations.md` detailing the problem context, real-world ministerial findings, and deliberate out-of-scope boundaries.
+- **Screenshots:** Real application captures generated in `screenshots/` directory.

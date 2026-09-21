@@ -308,6 +308,7 @@ public class HouseholdDashboardController {
             Parent root = loader.load();
 
             RecordEntryController ctrl = loader.getController();
+            ctrl.setSelectedHousehold(currentHousehold);
             ctrl.setOnSaveCallback(() -> loadHousehold(currentHousehold));
 
             Stage stage = new Stage();

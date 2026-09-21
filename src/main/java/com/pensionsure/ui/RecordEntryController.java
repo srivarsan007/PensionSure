@@ -119,6 +119,17 @@ public class RecordEntryController {
         }
     }
 
+    public void setSelectedHousehold(Household h) {
+        if (h != null && householdCombo != null) {
+            for (Household item : householdCombo.getItems()) {
+                if (item.getId() == h.getId()) {
+                    householdCombo.setValue(item);
+                    break;
+                }
+            }
+        }
+    }
+
     public void setOnSaveCallback(Runnable callback) {
         this.onSaveCallback = callback;
     }
@@ -264,6 +275,16 @@ public class RecordEntryController {
         }
 
         String dob = dobField.getText().trim();
+        if (dob.isBlank()) {
+            setValidationError("Date of birth is required.");
+            mainTabPane.getSelectionModel().select(0);
+            return null;
+        }
+        if (!DateFormatUtils.isValidDate(dob)) {
+            setValidationError("Invalid date of birth format. Please enter a valid date (e.g. DD/MM/YYYY or YYYY-MM-DD).");
+            mainTabPane.getSelectionModel().select(0);
+            return null;
+        }
         String normalDob = normaliseDobOrRaw(dob);
 
         Pensioner p = new Pensioner();
