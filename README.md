@@ -106,7 +106,16 @@ TC02 Name similarity score: 0.9667 (Flagged: true)
 
 ---
 
-## 6. Project Documentation
-* [`dev-log.md`](dev-log.md) — Running design decisions, rationale, and module breakdown.
+## 6. Screenshots & UI Demonstration
+
+Real captured screenshots of the running JavaFX interface are available in the [`screenshots/`](screenshots/) directory:
+
+* **[Mismatch Detection Result (`screenshots/mismatch_result.png`)](screenshots/mismatch_result.png):** Displays a real comparison showing a 1-character name spelling near-miss (*Mohan Kumar* vs. *Mohann Kumar*, 98.3% similarity), with colour-coded `⚠ FLAGGED` status and actionable guidance.
+* **[Household Aggregation Dashboard (`screenshots/household_dashboard.png`)](screenshots/household_dashboard.png):** Displays the multi-pensioner household aggregation for *Sharma Household* showing member submission states, readiness scores, and deadline urgency.
+
+---
+
+## 7. Project Documentation
+* [`dev-log.md`](dev-log.md) — Running design decisions, rationale, and module breakdown across all phases.
 * [`docs/limitations.md`](docs/limitations.md) — Architectural boundaries, privacy guidelines, and out-of-scope capabilities.
 * [`schema_dump.sql`](schema_dump.sql) — Complete SQLite relational schema DDL.
