@@ -1,0 +1,5 @@
+case_id,scenario,record_name,record_dob,record_address,submitted_name,submitted_dob,submitted_address,expected_name_score,expected_name_flag,expected_dob_score,expected_dob_flag,expected_address_score,expected_address_flag,expected_overall_mismatch
+TC01,Identical Clean Match,Ramesh Kumar Sharma,1955-03-15,Flat 4B Sector 12 RK Puram New Delhi 110022,Ramesh Kumar Sharma,1955-03-15,Flat 4B Sector 12 RK Puram New Delhi 110022,1.0000,false,1.0000,false,1.0000,false,false
+TC02,Clerical Name Typo,Mohan,1955-03-15,Flat 4B Sector 12 RK Puram New Delhi 110022,Mohann,1955-03-15,Flat 4B Sector 12 RK Puram New Delhi 110022,0.9667,true,1.0000,false,1.0000,false,true
+TC03,Date Format Notation,Ramesh Kumar Sharma,15/03/1955,Flat 4B Sector 12 RK Puram New Delhi 110022,Ramesh Kumar Sharma,03/15/1955,Flat 4B Sector 12 RK Puram New Delhi 110022,1.0000,false,0.9000,true,1.0000,false,true
+TC04,Address Number Discrepancy,Ramesh Kumar Sharma,1955-03-15,Flat 4B Sector 12 RK Puram New Delhi 110022,Ramesh Kumar Sharma,1955-03-15,Flat 4C Sector 12 RK Puram New Delhi 110022,1.0000,false,1.0000,false,0.9767,false,false

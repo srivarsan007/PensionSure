@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.pensionsure.ui.MainDashboardController"
+            prefWidth="900" prefHeight="620"
+            styleClass="root-pane">
+
+    <!-- ── Top: App header ──────────────────────────────────────────────── -->
+    <top>
+        <VBox styleClass="header-bar">
+            <padding><Insets top="16" right="24" bottom="16" left="24"/></padding>
+            <HBox alignment="CENTER_LEFT" spacing="16">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="PensionSure" styleClass="app-title"/>
+                    <Label text="DLC Submission Readiness Assistant" styleClass="app-subtitle"/>
+                </VBox>
+                <Button text="🏡 Household Dashboard" onAction="#onOpenHouseholdDashboard" styleClass="btn-accent"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- ── Centre: Two-column layout ────────────────────────────────────── -->
+    <center>
+        <HBox spacing="0">
+            <!-- Left panel: pensioner list -->
+            <VBox prefWidth="280" styleClass="side-panel" spacing="8">
+                <padding><Insets top="16" right="12" bottom="16" left="12"/></padding>
+                <Label text="Registered Pensioners" styleClass="panel-heading"/>
+                <ListView fx:id="pensionerListView" VBox.vgrow="ALWAYS"/>
+                <HBox spacing="8">
+                    <Button fx:id="addPensionerBtn" text="＋ Add Pensioner"
+                            onAction="#onAddPensioner" styleClass="btn-primary" maxWidth="Infinity"
+                            HBox.hgrow="ALWAYS"/>
+                </HBox>
+            </VBox>
+
+            <!-- Right panel: action area for selected pensioner -->
+            <VBox fx:id="actionPane" spacing="16" HBox.hgrow="ALWAYS" styleClass="action-panel">
+                <padding><Insets top="24" right="24" bottom="24" left="24"/></padding>
+
+                <Label fx:id="selectedPensionerLabel"
+                       text="Select a pensioner from the list to get started."
+                       styleClass="placeholder-label" wrapText="true"/>
+
+                <Separator/>
+
+                <!-- Summary cards row -->
+                <HBox spacing="14" fx:id="summaryRow" visible="false" managed="false">
+                    <VBox styleClass="info-card" spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="PPO Number" styleClass="card-label"/>
+                        <Label fx:id="ppoLabel" text="—" styleClass="card-value"/>
+                    </VBox>
+                    <VBox styleClass="info-card" spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Pension Type" styleClass="card-label"/>
+                        <Label fx:id="typeLabel" text="—" styleClass="card-value"/>
+                    </VBox>
+                    <VBox styleClass="info-card" spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="PDA on File" styleClass="card-label"/>
+                        <Label fx:id="pdaLabel" text="—" styleClass="card-value"/>
+                    </VBox>
+                    <VBox styleClass="info-card" spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Deadline Escalation" styleClass="card-label"/>
+                        <Label fx:id="escalationLabel" text="—" styleClass="card-value"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Action buttons -->
+                <HBox spacing="12" fx:id="actionButtonsRow" visible="false" managed="false">
+                    <Button text="📋  Enter / Edit PDA Record"
+                            onAction="#onEnterPDARecord" styleClass="btn-secondary"/>
+                    <Button text="📝  New DLC Submission"
+                            onAction="#onNewSubmission" styleClass="btn-primary"/>
+                    <Button text="🔍  View Match Report"
+                            onAction="#onViewReport" styleClass="btn-accent"/>
+                    <Button text="🏡  View Household"
+                            onAction="#onViewPensionerHousehold" styleClass="btn-secondary"/>
+                </HBox>
+
+                <!-- Status label -->
+                <Label fx:id="statusLabel" text="" styleClass="status-label" wrapText="true"/>
+            </VBox>
+        </HBox>
+    </center>
+
+    <!-- ── Bottom: Status bar ───────────────────────────────────────────── -->
+    <bottom>
+        <HBox styleClass="status-bar">
+            <padding><Insets top="6" right="16" bottom="6" left="16"/></padding>
+            <Label fx:id="statusBarLabel" text="Ready" styleClass="status-bar-label"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

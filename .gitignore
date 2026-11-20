@@ -1,0 +1,21 @@
+# Build output
+target/
+dependency-reduced-pom.xml
+
+# Databases & local stores
+*.db
+*.db-wal
+*.db-shm
+
+# Archives
+*.zip
+
+# OS metadata
+.DS_Store
+
+# IDEs & editors
+.idea/
+.vscode/
+
+# Environment
+.env

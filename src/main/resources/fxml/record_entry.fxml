@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<!--
+    Record Entry Form — three tabs covering the full Phase 1 data entry:
+    Tab 1: Pensioner registration details
+    Tab 2: PDA record (the authoritative data on file at the pension bank)
+    Tab 3: DLC submission draft (what the pensioner intends to submit)
+-->
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.pensionsure.ui.RecordEntryController"
+            prefWidth="620" prefHeight="560">
+
+    <top>
+        <VBox styleClass="header-bar">
+            <padding><Insets top="14" right="20" bottom="14" left="20"/></padding>
+            <Label text="Pensioner &amp; DLC Entry" styleClass="app-title"/>
+            <Label fx:id="formSubtitle" text="New Pensioner Registration" styleClass="app-subtitle"/>
+        </VBox>
+    </top>
+
+    <center>
+        <TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE">
+
+            <!-- ═══ Tab 1: Pensioner Details ══════════════════════════════ -->
+            <Tab text="1 · Pensioner Details">
+                <ScrollPane fitToWidth="true">
+                    <GridPane hgap="12" vgap="14" styleClass="form-grid">
+                        <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
+
+                        <Label text="Household" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                               styleClass="form-label"/>
+                        <ComboBox fx:id="householdCombo" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                                  maxWidth="Infinity" GridPane.hgrow="ALWAYS"
+                                  promptText="Select existing household"/>
+                        <Button text="New Household" onAction="#onCreateHousehold"
+                                GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+
+                        <Label text="Full Name *" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                               styleClass="form-label"/>
+                        <TextField fx:id="nameField" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                                   GridPane.columnSpan="2" maxWidth="Infinity"
+                                   promptText="e.g. Ramesh Kumar Sharma"/>
+
+                        <Label text="Date of Birth *" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                               styleClass="form-label"/>
+                        <TextField fx:id="dobField" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                                   GridPane.columnSpan="2" maxWidth="Infinity"
+                                   promptText="DD/MM/YYYY or YYYY-MM-DD"/>
+
+                        <Label text="Pension Type *" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                               styleClass="form-label"/>
+                        <ComboBox fx:id="pensionTypeCombo" GridPane.rowIndex="3" GridPane.columnIndex="1"
+                                  GridPane.columnSpan="2" maxWidth="Infinity"/>
+
+                        <Label text="PPO Number" GridPane.rowIndex="4" GridPane.columnIndex="0"
+                               styleClass="form-label"/>
+                        <TextField fx:id="ppoField" GridPane.rowIndex="4" GridPane.columnIndex="1"
+                                   GridPane.columnSpan="2" maxWidth="Infinity"
+                                   promptText="Optional — unique pension payment order number"/>
+
+                        <columnConstraints>
+                            <ColumnConstraints minWidth="130" prefWidth="140"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                            <ColumnConstraints minWidth="110"/>
+                        </columnConstraints>
+                    </GridPane>
+                </ScrollPane>
+            </Tab>
+
+            <!-- ═══ Tab 2: PDA Record ═════════════════════════════════════ -->
+            <Tab text="2 · PDA Record on File">
+                <ScrollPane fitToWidth="true">
+                    <GridPane hgap="12" vgap="14" styleClass="form-grid">
+                        <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
+
+                        <Label text="PDA / Bank Name" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                               styleClass="form-label"/>
+                        <TextField fx:id="pdaNameField" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                                   maxWidth="Infinity"
+                                   promptText="e.g. State Bank of India, Main Branch"/>
+
+                        <Label text="Name on PDA File *" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                               styleClass="form-label"/>
+                        <TextField fx:id="pdaNameOnFileField" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                                   maxWidth="Infinity"
+                                   promptText="Exact name as in PDA/bank records"/>
+
+                        <Label text="DOB on PDA File *" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                               styleClass="form-label"/>
+                        <TextField fx:id="pdaDobOnFileField" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                                   maxWidth="Infinity"
+                                   promptText="As stored at PDA (any format)"/>
+
+                        <Label text="Address on PDA File *" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                               styleClass="form-label"/>
+                        <TextArea fx:id="pdaAddressField" GridPane.rowIndex="3" GridPane.columnIndex="1"
+                                  maxWidth="Infinity" prefRowCount="4" wrapText="true"
+                                  promptText="Full address as stored in PDA records"/>
+
+                        <columnConstraints>
+                            <ColumnConstraints minWidth="140" prefWidth="150"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                        </columnConstraints>
+                    </GridPane>
+                </ScrollPane>
+            </Tab>
+
+            <!-- ═══ Tab 3: DLC Submission Draft ═══════════════════════════ -->
+            <Tab text="3 · DLC Submission Draft">
+                <ScrollPane fitToWidth="true">
+                    <GridPane hgap="12" vgap="14" styleClass="form-grid">
+                        <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
+
+                        <Label text="Submitted Name *" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                               styleClass="form-label"/>
+                        <TextField fx:id="submittedNameField" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                                   maxWidth="Infinity"
+                                   promptText="Name as the pensioner intends to submit"/>
+
+                        <Label text="Submitted DOB *" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                               styleClass="form-label"/>
+                        <TextField fx:id="submittedDobField" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                                   maxWidth="Infinity"
+                                   promptText="DOB as the pensioner intends to submit"/>
+
+                        <Label text="Submitted Address *" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                               styleClass="form-label"/>
+                        <TextArea fx:id="submittedAddressField" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                                  maxWidth="Infinity" prefRowCount="4" wrapText="true"
+                                  promptText="Address as the pensioner intends to submit"/>
+
+                        <Label text="Deadline Year *" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                               styleClass="form-label"/>
+                        <TextField fx:id="deadlineYearField" GridPane.rowIndex="3" GridPane.columnIndex="1"
+                                   maxWidth="Infinity"
+                                   promptText="e.g. 2024"/>
+
+                        <columnConstraints>
+                            <ColumnConstraints minWidth="140" prefWidth="150"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                        </columnConstraints>
+                    </GridPane>
+                </ScrollPane>
+            </Tab>
+
+        </TabPane>
+    </center>
+
+    <bottom>
+        <HBox spacing="12" styleClass="form-footer">
+            <padding><Insets top="12" right="20" bottom="12" left="20"/></padding>
+            <Label fx:id="validationLabel" text="" styleClass="validation-label"
+                   wrapText="true" HBox.hgrow="ALWAYS"/>
+            <Button text="← Back" onAction="#onBack"/>
+            <Button fx:id="saveAndRunBtn" text="Save &amp; Run Match →"
+                    onAction="#onSaveAndRunMatch" styleClass="btn-primary" defaultButton="true"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>
