@@ -1,12 +1,44 @@
 # Contributing to PensionSure
 
-Thank you for your interest in improving PensionSure.
+Thank you for your interest in contributing to PensionSure!
 
-1. Fork the repository and create your branch from `main`.
-2. Ensure your code compiles cleanly using Java 17+ and Maven 3.9+.
-3. Maintain test isolation: core fuzzy matching must not depend on database or UI imports.
-4. Run all unit tests with `mvn -B clean test` and verify that all tests pass.
-5. Follow existing naming conventions and keep code comments concise and professional.
-6. Test UI modifications locally with `mvn javafx:run` before opening a pull request.
-7. Open a pull request with a descriptive title and summary of changes.
-8. Verify CI passes across all operating system targets.
+## Development Setup
+
+1. Fork and clone the repository:
+   ```bash
+   git clone https://github.com/<your-username>/PensionSure.git
+   cd PensionSure
+   ```
+2. Verify prerequisites: Java 17+ and Maven 3.9+ (or use the included `./mvnw`).
+3. Create a feature or bugfix branch using descriptive naming:
+   ```bash
+   git checkout -b feat/your-feature-name
+   # or
+   git checkout -b fix/your-bugfix-name
+   ```
+
+## Building and Testing
+
+Run the full verification suite before committing:
+```bash
+./mvnw -B clean verify
+```
+All tests must pass cleanly. If modifying UI components, launch the application locally to verify visual rendering:
+```bash
+./mvnw javafx:run
+```
+
+## Commit Guidelines
+
+We follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
+- `feat:` for new capabilities
+- `fix:` for bug fixes
+- `test:` for test additions or adjustments
+- `docs:` for documentation updates
+- `chore:` for build tooling or dependency updates
+
+## Pull Requests
+
+1. Open a pull request against `main`.
+2. Provide a clear description of the problem solved and the implementation details.
+3. Ensure CI workflows run and pass on Ubuntu and macOS matrix runners.

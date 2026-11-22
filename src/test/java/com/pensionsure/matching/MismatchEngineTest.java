@@ -109,13 +109,13 @@ class MismatchEngineTest {
 
         // Name should be flagged because "Mohan" != "Mohann"
         assertTrue(nameFlag.isFlagged(),
-            "A one-character typo in name should trigger a flag for operator review");
+            "A one-character typo in name should trigger a flag for operator verification");
         
         // Jaro-Winkler score is high (~0.967) showing high-confidence near-match
         assertEquals(0.9667, nameFlag.getConfidenceScore(), 0.01,
             "Jaro-Winkler score for 'Mohan' vs 'Mohann' should be ~0.967");
         assertTrue(nameFlag.getRecommendation().contains("Minor name spelling difference"),
-            "Recommendation should guide user regarding minor spelling variant");
+            "Recommendation should advise user regarding minor spelling variant");
 
         // DOB and address should NOT be flagged (they're identical)
         assertFalse(dobFlag.isFlagged(),  "DOB is identical — should not be flagged");

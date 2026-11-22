@@ -1,107 +1,186 @@
 # PensionSure
 
-Java desktop tool that checks a pensioner's Digital Life Certificate details against the pension-agency record before submission, using Jaro-Winkler and Levenshtein matching.
+> Java desktop tool that checks a pensioner's Digital Life Certificate details against the pension-agency record before submission, using Jaro-Winkler and Levenshtein matching.
+
+[![CI](https://github.com/srivarsan007/PensionSure/actions/workflows/ci.yml/badge.svg)](https://github.com/srivarsan007/PensionSure/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Java 17+](https://img.shields.io/badge/Java-17%2B-orange.svg)](https://adoptium.net)
 
 ---
 
-## Screenshots
+## Pre-Submission Verification & Readiness
 
-### Discrepancy Match Report
-![PensionSure Match Report](screenshots/mismatch_result.png)
+![PensionSure Discrepancy Match Report](docs/images/mismatch_result.png)
 
-### Multi-Pensioner Household Aggregation Dashboard
-![PensionSure Household Dashboard](screenshots/household_dashboard.png)
+![PensionSure Household Dashboard](docs/images/household_dashboard.png)
+
+---
+
+## Table of Contents
+
+- [Why It Exists](#why-it-exists)
+- [Features](#features)
+- [Installation](#installation)
+- [Quick Usage](#quick-usage)
+- [How It Works](#how-it-works)
+- [Sample Data](#sample-data)
+- [Project Structure](#project-structure)
+- [Testing](#testing)
+- [Roadmap](#roadmap)
+- [Contributing, Security & License](#contributing-security--license)
+- [Disclaimer](#disclaimer)
+- [Acknowledgements & References](#acknowledgements--references)
+
+---
+
+## Why It Exists
+
+In India, millions of central, state, and defence pensioners must submit an annual Digital Life Certificate (DLC / *Jeevan Pramaan*) every November to ensure uninterrupted pension disbursements. Submissions frequently fail or face rejection not due to identity fraud, but because of subtle clerical variations between submission drafts and historical Pension Disbursing Agency (PDA) records. Common issues include phonetic transliteration differences in English names, alternative date notation conventions (`DD/MM/YYYY` vs. `YYYY-MM-DD`), and minor residential address abbreviations.
+
+PensionSure acts as an offline, pre-flight triage assistant. By catching clerical discrepancies and evaluating deadline urgency before formal submission attempts, it protects vulnerable pensioners from avoidable delays and pension payment lapses.
 
 ---
 
 ## Features
 
-- **Field-Specific Fuzzy Matching:** Evaluates draft submissions against agency records using Jaro-Winkler (names), normalized Levenshtein (addresses), and 7-pattern ISO-8601 date parsing.
-- **Semantic Formatting Detection:** Differentiates between non-damaging date notation differences (e.g. `15/03/1955` vs `1955-03-15`) and true identity discrepancies.
-- **Household Aggregation:** Relational clustering of co-located family pensioners to coordinate DLC renewals in a single visit.
-- **Submission Cutoff Tracking:** Real-time deadline monitoring calculating days remaining to the November 30 deadline with automated escalation levels.
-- **Zero-Configuration Persistence:** Embedded SQLite engine automatically initializes tables with strict foreign key integrity on first run.
+- **Field-Specific Fuzzy Matching:** Evaluates draft submissions against agency records using Jaro-Winkler (names), length-normalized Levenshtein (addresses), and 7-pattern ISO-8601 date parsing.
+- **Two-Tier Date Discrepancy Detection:** Distinguishes between harmless date formatting variants (e.g., `15/03/1955` vs `1955-03-15`, assigned a 0.90 format score with auto-correction guidance) and true identity discrepancies.
+- **Multi-Pensioner Household Aggregation:** Relational grouping of co-located family beneficiaries to coordinate renewals in a single outreach visit.
+- **Cutoff Deadline Monitoring:** Evaluates remaining days against the statutory November 30 cutoff with three-tier escalation alerts (`INFO`, `WARNING`, `URGENT`).
+- **Zero-Configuration Embedded SQLite:** Automatically bootstraps database schema with strict foreign key integrity in the working directory on launch.
 
 ---
 
-## Requirements
+## Installation
 
-- **Java Development Kit (JDK):** JDK 17 or later (tested on OpenJDK 17 and OpenJDK 21 LTS).
-- **Build System:** Apache Maven 3.9 or later.
-- **GUI Environment:** A desktop display environment (macOS Aqua, Windows Desktop, or Linux X11/Wayland) is required to run `mvn javafx:run`.
-
----
-
-## Quick Start
-
-### 1. Run Unit Tests (19 tests)
+### Option 1: Download Standalone JAR
+Download the shaded executable JAR from the [Releases](https://github.com/srivarsan007/PensionSure/releases) page and run:
 ```bash
-mvn -B clean test
+java -jar pensionsure-1.0.1.jar
 ```
 
-### 2. Launch the Application
+### Option 2: Build from Source
+Ensure Java 17+ and Git are installed:
 ```bash
-mvn javafx:run
-```
-
-### 3. Build Executable Standalone JAR
-```bash
-mvn -B clean package
-java -jar target/pensionsure-1.0-SNAPSHOT.jar
+git clone https://github.com/srivarsan007/PensionSure.git
+cd PensionSure
+./mvnw -B clean package
+java -jar target/pensionsure-1.0.1.jar
 ```
 
 ---
 
-## Sample Input and Expected Output
+## Quick Usage
 
-Reference test cases are provided in [`samples/match-cases.csv`](samples/match-cases.csv):
-
-| Case | Scenario | Submitted Input vs. Agency Baseline | Field Scores | Status | Action Guidance |
-| :--- | :--- | :--- | :--- | :---: | :--- |
-| **TC01** | Clean Match | "Ramesh Kumar Sharma", `1955-03-15`, "Flat 4B Sector 12 RK Puram" | Name: 1.000<br>DOB: 1.000<br>Addr: 1.000 | **PASS** | Ready for submission. |
-| **TC02** | Name Typo | "Mohann Kumar" vs. "Mohan Kumar" | Name: **0.9667**<br>DOB: 1.000<br>Addr: 1.000 | **FLAGGED** | Clerical typo detected. Verify spelling with bank records. |
-| **TC03** | Date Notation | "22/08/1958" vs. `1958-08-22` | Name: 1.000<br>DOB: **0.9000**<br>Addr: 1.000 | **FLAGGED** | Notation difference only. Auto-normalises to ISO-8601. |
-| **TC04** | Street Num | "Flat 4C Sector 12" vs. "Flat 4B Sector 12" | Name: 1.000<br>DOB: 1.000<br>Addr: 0.9773 | **PASS** | Minor variation above 0.70 threshold. |
+1. **Launch the Application:** Run `./mvnw javafx:run` (or launch the standalone JAR).
+2. **Select Records & Submissions:** Select an existing pensioner or enter a new demographic baseline record and draft DLC details.
+3. **Analyze Match Report:** Click **Check DLC Readiness** to inspect similarity scores, discrepancy flags, and actionable guidance before submitting to the portal.
 
 ---
 
 ## How It Works
 
-1. **Field-Specific Comparators:** Jaro-Winkler evaluates pensioner names with prefix-weighting, normalized Levenshtein evaluates residential addresses, and a 7-pattern normalizer standardizes dates to ISO-8601.
-2. **Confidence Metric:** Composite confidence is the arithmetic mean of the three field scores; any score below 0.85 overall or containing a flagged field triggers an alert.
-3. **Format vs. Fact Distinction:** Date entries representing the same calendar day in differing formats receive a 0.90 score and an auto-correction prompt rather than a rejection.
-4. **Deadline Escalation:** The countdown to the November 30 cutoff categorizes urgency into `INFO` (> 14 days), `WARNING` (3 to 14 days), and `URGENT` (< 3 days or overdue).
-5. **Household Clustering:** Relational foreign keys associate pensioners sharing an address into a unified household card to streamline verification.
+```mermaid
+flowchart TD
+    A["Draft DLC Input"] --> B["MismatchEngine"]
+    C["Agency Baseline Record"] --> B
+    B --> D["NameMatchStrategy (Jaro-Winkler)"]
+    B --> E["DateMatchStrategy (ISO Normalization)"]
+    B --> F["AddressMatchStrategy (Normalized Levenshtein)"]
+    D --> G["Field Confidence Scores & Flags"]
+    E --> G
+    F --> G
+    G --> H["Arithmetic Mean Confidence"]
+    H --> I["Actionable Match Report"]
+```
+
+1. **Jaro-Winkler for Names:** Gives prefix-weighted preference to initial characters, reflecting name stability in Indian transliteration. Any score below 1.0 triggers an operator verification flag.
+2. **Normalized Levenshtein for Addresses:** Normalizes raw edit cost by maximum string length (`1.0 - (editDistance / maxLen)`). A threshold of 0.70 absorbs standard street abbreviations ("Rd", "Ngr") without failing valid entries.
+3. **ISO-8601 Date Normalization:** Validates and standardizes 7 common date patterns into ISO-8601 `YYYY-MM-DD`. Matching calendar dates with differing notation receive a 0.90 format score.
+4. **Overall Confidence:** Calculated as the unweighted arithmetic mean of the name, date, and address scores.
+5. **Cutoff Escalation:** Evaluates calendar days remaining before November 30:
+   - `INFO`: > 14 days remaining
+   - `WARNING`: 3 to 14 days remaining
+   - `URGENT`: < 3 days remaining, deadline day, or overdue
 
 ---
 
-## Configuration
+## Sample Data
 
-No external configuration files or `.env` setups are required. On first startup, PensionSure automatically creates and bootstraps an embedded SQLite database named `pensionsure.db` in the current working directory.
-
----
-
-## Limitations
-
-- **Offline Baseline:** Records on file are manually entered or imported offline; the tool does not interface with live Pension Disbursing Agency (PDA) or bank core banking APIs.
-- **Heuristic Thresholds:** Matching thresholds (0.85 name, 0.70 address, 0.85 overall) are heuristic indicators and do not guarantee acceptance by official portals.
-- **Clerical Scope:** Compares three primary demographic fields (Name, DOB, Address); it does not validate biometric signatures, iris scans, or facial authentication.
-- **Unofficial Tool:** PensionSure is an independent pre-screening utility and is not affiliated with the Government of India or the Jeevan Pramaan portal.
-- **Single-User Desktop:** Designed as a single-operator desktop utility rather than a multi-tenant client-server system.
+Benchmark data files are provided in the [`samples/`](samples/) directory:
+- [`samples/match-cases.csv`](samples/match-cases.csv): Deterministic test scenarios validating clean matches, name typos, date format differences, and address variations.
+- [`samples/demo-data.sql`](samples/demo-data.sql): Seed database script containing sample households, pensioner demographics, and baseline agency records for offline testing.
 
 ---
 
-## License
+## Project Structure
 
-This project is licensed under the [MIT License](LICENSE) — see the [LICENSE](LICENSE) file for details.  
-Copyright (c) 2026 Srivarsan K V.
+```
+PensionSure
+├── .github/              # GitHub Actions CI, CodeQL, issue & PR templates
+├── docs/
+│   ├── images/           # UI screenshots and documentation diagrams
+│   ├── design-notes.md   # Architectural decisions and technical trade-offs
+│   └── limitations.md    # Boundary conditions and out-of-scope capabilities
+├── samples/
+│   ├── demo-data.sql     # Offline database seed script
+│   └── match-cases.csv   # Deterministic benchmark match cases
+├── src/
+│   ├── main/java/        # Domain entities, fuzzy matching, repositories, UI controllers
+│   ├── main/resources/   # JavaFX FXML layouts and stylesheets
+│   └── test/java/        # JUnit 5 test suite and benchmark CSV validation
+├── pom.xml               # Maven POM configuration
+├── mvnw / mvnw.cmd       # Official Maven Wrapper executables
+├── LICENSE               # MIT License
+├── CHANGELOG.md          # Version history
+├── CONTRIBUTING.md       # Contribution guidelines
+├── CODE_OF_CONDUCT.md    # Community standards
+└── SECURITY.md           # Vulnerability disclosure policy
+```
 
 ---
 
-## Acknowledgements
+## Testing
 
-- Fellegi, I. P., & Sunter, A. B. (1969). "A Theory for Record Linkage." *Journal of the American Statistical Association*, 64(328), 1183-1210.
-- Jaro, M. A. (1989). "Advances in record-linkage methodology as applied to matching the 1985 Census of Tampa, Florida." *Journal of the American Statistical Association*, 84(406), 414-420.
-- Winkler, W. E. (1990). "String Comparator Metrics and Enhanced Decision Rules in the Fellegi-Sunter Model of Record Linkage." *Proceedings of the Section on Survey Research Methods*, 354-359.
-- Levenshtein, V. I. (1966). "Binary codes capable of correcting deletions, insertions, and reversals." *Soviet Physics Doklady*, 10(8), 707-710.
-- AI coding tools were utilized in the development and documentation of portions of this codebase.
+Run the automated test suite across all 19 unit and benchmark tests:
+```bash
+./mvnw -B test
+```
+
+Execute full verification and packaging:
+```bash
+./mvnw -B clean verify
+```
+
+---
+
+## Roadmap
+
+- **OCR Form Pre-Filling:** Optical character recognition to extract demographic fields from scanned PPO letters or Aadhaar cards.
+- **Agency Data Connectors:** Direct read-only adapter integration with standardized pension management databases.
+- **Automated Messaging Reminders:** SMS and email notification dispatcher for household deadline escalation alerts.
+- **Extended Field Comparison:** Expand fuzzy screening to bank branch IFSC codes and relationship titles.
+
+---
+
+## Contributing, Security & License
+
+- **Contributing:** Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before opening a pull request.
+- **Security:** To report a vulnerability, follow our [SECURITY.md](SECURITY.md) private disclosure process.
+- **License:** Licensed under the [MIT License](LICENSE). Copyright (c) 2026 Srivarsan K V.
+
+---
+
+## Disclaimer
+
+PensionSure is an independent open-source software project. It is **not** an official application of, nor is it affiliated with, endorsed by, or connected to the Government of India, the Department of Pension & Pensioners' Welfare (DoPPW), the National Informatics Centre (NIC), or the Jeevan Pramaan portal. This software does not submit certificates directly to disbursing agencies and is not a substitute for official biometric authentication.
+
+---
+
+## Acknowledgements & References
+
+- Fellegi, I. P., & Sunter, A. B. (1969). "A Theory for Record Linkage." *Journal of the American Statistical Association*, 64(328), 1183–1210.
+- Jaro, M. A. (1989). "Advances in record-linkage methodology as applied to matching the 1985 Census of Tampa, Florida." *Journal of the American Statistical Association*, 84(406), 414–420.
+- Winkler, W. E. (1990). "String Comparator Metrics and Enhanced Decision Rules in the Fellegi-Sunter Model of Record Linkage." *Proceedings of the Section on Survey Research Methods*, 354–359.
+- Levenshtein, V. I. (1966). "Binary codes capable of correcting deletions, insertions, and reversals." *Soviet Physics Doklady*, 10(8), 707–710.
+- AI coding tools were used in the development and technical documentation of this codebase.

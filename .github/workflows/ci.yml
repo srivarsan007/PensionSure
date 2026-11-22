@@ -6,9 +6,16 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
-    name: Test on ${{ matrix.os }} (JDK ${{ matrix.java }})
+    name: Build & Test on ${{ matrix.os }} (JDK ${{ matrix.java }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -27,5 +34,16 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
 
-      - name: Run unit tests
-        run: mvn -B clean test
+      - name: Grant execute permission for Maven wrapper
+        run: chmod +x mvnw
+
+      - name: Verify build and run tests
+        run: ./mvnw -B clean verify
+
+      - name: Upload Shaded JAR artifact
+        if: matrix.os == 'ubuntu-latest' && matrix.java == '21'
+        uses: actions/upload-artifact@v4
+        with:
+          name: pensionsure-jar
+          path: target/pensionsure-*.jar
+          if-no-files-found: error

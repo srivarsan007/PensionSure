@@ -16,7 +16,7 @@ import com.pensionsure.exception.InvalidDateFormatException;
  *    This is NOT a real discrepancy — it's a data-entry formatting difference
  *    that the system can auto-correct. Flagging it as a high-severity mismatch
  *    would produce false alarms and erode user trust in the tool.
- *    Confidence score: 0.90 (slightly below 1.0 to signal "review formatting").
+ *    Confidence score: 0.90 (slightly below 1.0 to signal "verify formatting").
  *
  *  IDENTITY mismatch (genuinely different dates):
  *    "15/03/1955" vs "20/07/1957" — these are different dates. This is likely
