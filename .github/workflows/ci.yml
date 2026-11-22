@@ -42,7 +42,7 @@ jobs:
 
       - name: Upload Shaded JAR artifact
         if: matrix.os == 'ubuntu-latest' && matrix.java == '21'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: pensionsure-jar
           path: target/pensionsure-*.jar
