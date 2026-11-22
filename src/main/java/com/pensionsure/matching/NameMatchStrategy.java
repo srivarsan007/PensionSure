@@ -67,7 +67,7 @@ public class NameMatchStrategy implements MatchStrategy {
 
     /**
      * Convenience overload: any spelling difference (similarity < 1.0) is flagged
-     * so that the pensioner/operator is alerted to review before DLC submission.
+     * so that the pensioner/operator is alerted to verify before DLC submission.
      */
     public boolean isMismatch(String onFile, String submitted) {
         return computeSimilarity(onFile, submitted) < 1.0;

@@ -152,7 +152,7 @@ public class MatchReportController {
                 verdictLabel.setText("✓ All fields match — submission looks ready.");
                 verdictLabel.setStyle("-fx-text-fill: #27ae60; -fx-font-weight: bold;");
             } else {
-                verdictLabel.setText("⚠ " + flagged + " mismatch(es) detected — review before submitting.");
+                verdictLabel.setText("⚠ " + flagged + " mismatch(es) detected — verify before submitting.");
                 verdictLabel.setStyle("-fx-text-fill: #c0392b; -fx-font-weight: bold;");
             }
 

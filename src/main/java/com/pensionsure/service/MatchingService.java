@@ -72,7 +72,7 @@ public class MatchingService {
         // Run the engine — pure logic, no I/O, fully testable in isolation
         MatchReport report = engine.analyse(record, submission);
 
-        // Persist each flag so the match history is available for review
+        // Persist each flag so the match history is available for inspection
         for (MismatchFlag flag : report.getFlags()) {
             flag.setSubmissionId(submission.getId());
             submissionRepo.saveMismatchFlag(flag);
