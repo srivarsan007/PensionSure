@@ -38,7 +38,7 @@
     <properties>
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <javafx.version>21.0.2</javafx.version>
+        <javafx.version>27.0.1.1</javafx.version>
         <junit.version>5.10.2</junit.version>
     </properties>
 
