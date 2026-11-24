@@ -29,14 +29,6 @@
 #   MVNW_VERBOSE - true: enable verbose log; debug: trace the mvnw script; others: silence the output
 # ----------------------------------------------------------------------------
 
-if [ -z "${JAVA_HOME-}" ]; then
-  if [ -x "/opt/homebrew/opt/openjdk@21/bin/java" ]; then
-    export JAVA_HOME="/opt/homebrew/opt/openjdk@21"
-  elif [ -x "/opt/homebrew/opt/openjdk/bin/java" ]; then
-    export JAVA_HOME="/opt/homebrew/opt/openjdk"
-  fi
-fi
-
 set -euf
 [ "${MVNW_VERBOSE-}" != debug ] || set -x
 
@@ -51,9 +43,6 @@ esac
 
 # set JAVACMD and JAVACCMD
 set_java_home() {
-  if [ -z "${JAVA_HOME-}" ] && [ -x "/opt/homebrew/opt/openjdk@21/bin/java" ]; then
-    JAVA_HOME="/opt/homebrew/opt/openjdk@21"
-  fi
   # For Cygwin and MinGW, ensure paths are in Unix format before anything is touched
   if [ -n "${JAVA_HOME-}" ]; then
     if [ -x "$JAVA_HOME/jre/sh/java" ]; then
