@@ -69,7 +69,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          .\mvnw.cmd -B clean package -DskipTests -Djavafx.platform=${{ matrix.javafx-platform }}
+          .\mvnw.cmd -B clean package -DskipTests "-Djavafx.platform=${{ matrix.javafx-platform }}"
           $VERSION = "${{ steps.version.outputs.version }}"
           $ASSET_NAME = "pensionsure-$VERSION-${{ matrix.platform-name }}.jar"
           Copy-Item "target/pensionsure-$VERSION.jar" -Destination $ASSET_NAME
