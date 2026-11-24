@@ -25,7 +25,7 @@ jobs:
           - os: macos-latest
             javafx-platform: mac-aarch64
             platform-name: macos-arm64
-          - os: macos-13
+          - os: macos-latest
             javafx-platform: mac
             platform-name: macos-x64
 
@@ -67,13 +67,14 @@ jobs:
 
       - name: Build standalone JAR (Windows)
         if: runner.os == 'Windows'
-        shell: bash
+        shell: pwsh
         run: |
-          cmd.exe /c "mvnw.cmd -B clean package -DskipTests -Djavafx.platform=${{ matrix.javafx-platform }}"
-          VERSION="${{ steps.version.outputs.version }}"
-          ASSET_NAME="pensionsure-${VERSION}-${{ matrix.platform-name }}.jar"
-          cp target/pensionsure-${VERSION}.jar "${ASSET_NAME}"
-          sha256sum "${ASSET_NAME}" > "${ASSET_NAME}.sha256"
+          .\mvnw.cmd -B clean package -DskipTests -Djavafx.platform=${{ matrix.javafx-platform }}
+          $VERSION = "${{ steps.version.outputs.version }}"
+          $ASSET_NAME = "pensionsure-$VERSION-${{ matrix.platform-name }}.jar"
+          Copy-Item "target/pensionsure-$VERSION.jar" -Destination $ASSET_NAME
+          $hash = (Get-FileHash -Algorithm SHA256 $ASSET_NAME).Hash.ToLower()
+          "$hash  $ASSET_NAME" | Out-File -Encoding ascii "$ASSET_NAME.sha256"
 
       - name: Upload artifact for publishing
         uses: actions/upload-artifact@v4
