@@ -6,7 +6,7 @@
 
     <groupId>com.pensionsure</groupId>
     <artifactId>pensionsure</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
 
     <name>PensionSure</name>
@@ -111,9 +111,10 @@
                         <phase>package</phase>
                         <goals><goal>shade</goal></goals>
                         <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.pensionsure.Main</mainClass>
+                                    <mainClass>com.pensionsure.Launcher</mainClass>
                                 </transformer>
                             </transformers>
                             <!-- Exclude module-info to avoid conflicts in shaded jar -->

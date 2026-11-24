@@ -21,6 +21,7 @@
 - [Why It Exists](#why-it-exists)
 - [Features](#features)
 - [Installation](#installation)
+- [Troubleshooting](#troubleshooting)
 - [Quick Usage](#quick-usage)
 - [How It Works](#how-it-works)
 - [Sample Data](#sample-data)
@@ -53,20 +54,54 @@ PensionSure acts as an offline, pre-flight triage assistant. By catching clerica
 
 ## Installation
 
-### Option 1: Download Standalone JAR
-Download the shaded executable JAR from the [Releases](https://github.com/srivarsan007/PensionSure/releases) page and run:
+### Option 1: Download Standalone Executable JAR
+
+Download the standalone executable JAR tailored for your operating system from the [Releases](https://github.com/srivarsan007/PensionSure/releases) page. Each package bundles the required platform-specific JavaFX native libraries and an embedded SQLite runtime:
+
+| Operating System | Architecture | Executable Package | Checksum |
+| :--- | :--- | :--- | :--- |
+| **Linux** | x86_64 | `pensionsure-1.0.2-linux.jar` | `pensionsure-1.0.2-linux.jar.sha256` |
+| **Windows** | x86_64 | `pensionsure-1.0.2-windows.jar` | `pensionsure-1.0.2-windows.jar.sha256` |
+| **macOS** (Apple Silicon) | `aarch64` (M1/M2/M3/M4) | `pensionsure-1.0.2-macos-arm64.jar` | `pensionsure-1.0.2-macos-arm64.jar.sha256` |
+| **macOS** (Intel) | `x86_64` | `pensionsure-1.0.2-macos-x64.jar` | `pensionsure-1.0.2-macos-x64.jar.sha256` |
+
+Launch the downloaded JAR directly with Java 17+:
 ```bash
-java -jar pensionsure-1.0.1.jar
+java -jar pensionsure-1.0.2-<os>.jar
 ```
 
-### Option 2: Build from Source
-Ensure Java 17+ and Git are installed:
+### Option 2: Run from Source (Fallback)
+
+If you prefer to run directly from source or develop locally, ensure Java 17+ and Git are installed:
+
 ```bash
 git clone https://github.com/srivarsan007/PensionSure.git
 cd PensionSure
-./mvnw -B clean package
-java -jar target/pensionsure-1.0.1.jar
+./mvnw javafx:run
 ```
+
+To build a standalone package locally for your current host platform:
+```bash
+./mvnw -B clean package
+java -jar target/pensionsure-1.0.2.jar
+```
+
+### Troubleshooting
+
+- **`JAVA_HOME` Not Set or Outdated:**
+  PensionSure requires JDK 17 or newer. If executing `./mvnw` or `java -jar` returns an error about locating a Java runtime or incompatible class versions:
+  - On macOS / Linux:
+    ```bash
+    export JAVA_HOME="/path/to/jdk-17-or-newer"
+    ```
+    For example on macOS with Homebrew OpenJDK:
+    ```bash
+    export JAVA_HOME="$(/usr/libexec/java_home -v 17+ 2>/dev/null || echo '/opt/homebrew/opt/openjdk@21')"
+    ```
+  - On Windows (PowerShell):
+    ```powershell
+    $env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-17..."
+    ```
 
 ---
 
@@ -109,7 +144,7 @@ flowchart TD
 
 Benchmark data files are provided in the [`samples/`](samples/) directory:
 - [`samples/match-cases.csv`](samples/match-cases.csv): Deterministic test scenarios validating clean matches, name typos, date format differences, and address variations.
-- [`samples/demo-data.sql`](samples/demo-data.sql): Seed database script containing sample households, pensioner demographics, and baseline agency records for offline testing.
+- [`samples/seed-data.sql`](samples/seed-data.sql): Seed database script containing sample households, pensioner demographics, and baseline agency records for offline testing.
 
 ---
 
@@ -117,14 +152,14 @@ Benchmark data files are provided in the [`samples/`](samples/) directory:
 
 ```
 PensionSure
-├── .github/              # GitHub Actions CI, CodeQL, issue & PR templates
+├── .github/              # GitHub Actions CI, CodeQL, release, issue & PR templates
 ├── docs/
 │   ├── images/           # UI screenshots and documentation diagrams
 │   ├── design-notes.md   # Architectural decisions and technical trade-offs
 │   └── limitations.md    # Boundary conditions and out-of-scope capabilities
 ├── samples/
-│   ├── demo-data.sql     # Offline database seed script
-│   └── match-cases.csv   # Deterministic benchmark match cases
+│   ├── match-cases.csv   # Deterministic benchmark match cases
+│   └── seed-data.sql     # Offline database seed script
 ├── src/
 │   ├── main/java/        # Domain entities, fuzzy matching, repositories, UI controllers
 │   ├── main/resources/   # JavaFX FXML layouts and stylesheets

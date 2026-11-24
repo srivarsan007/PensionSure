@@ -5,6 +5,18 @@ All notable changes to PensionSure will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-11-24
+
+### Added
+- Standalone `Launcher` entry point class that decouples application startup from `javafx.application.Application`, allowing execution via `java -jar`.
+- Multi-platform automated release workflow (`.github/workflows/release.yml`) triggered by `v*` tags to compile and package standalone executable JARs for Linux (`x86_64`), Windows (`x86_64`), macOS Apple Silicon (`aarch64`), and macOS Intel (`x86_64`) with platform-specific JavaFX natives and SHA-256 checksums.
+- Operating system download matrix and environment troubleshooting guidance in `README.md`.
+
+### Changed
+- Restored `mvnw` and `mvnw.cmd` Maven Wrapper scripts to the unmodified official upstream distribution with no host-specific paths.
+- Renamed offline sample database seed script to `samples/seed-data.sql` and updated all documentation references.
+- Configured Maven Shade Plugin to prevent `dependency-reduced-pom.xml` generation during builds.
+
 ## [1.0.1] - 2026-11-22
 
 ### Added
